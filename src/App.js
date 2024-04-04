@@ -6,9 +6,9 @@ function App() {
   const [formData, setFormData] = useState({ name: "", email: "" });
   const [recordData, setRecordData] = useState([]);
 
-  console.log("process.env:", process.env);
-  console.log("process.env.REACT_APP_NODE_ENV:", process.env.REACT_APP_NODE_ENV);
-  console.log("process.env.REACT_APP_SERVER_BASE_URL:", process.env.REACT_APP_SERVER_BASE_URL);
+  // console.log("process.env:", process.env);
+  // console.log("process.env.REACT_APP_NODE_ENV:", process.env.REACT_APP_NODE_ENV);
+  // console.log("process.env.REACT_APP_SERVER_BASE_URL:", process.env.REACT_APP_SERVER_BASE_URL);
   const base_url = process.env.REACT_APP_NODE_ENV === 'development' ? process.env.REACT_APP_LOCAL_BASE_URL : process.env.REACT_APP_SERVER_BASE_URL;
 
   useEffect(() => {
@@ -23,6 +23,7 @@ function App() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     axios.post(`${base_url}/addUser`, formData).then(res => { setFormData({ name: "", email: "" }); alert("User created successfully") }).catch(err => alert(`Some error occured ==>${err}`));
+    window.location.reload();
   };
 
   return (
@@ -30,7 +31,7 @@ function App() {
       <nav className="navbar navbar-light bg-light mb-2">
         <a class="navbar-brand" href="https://github.com/blazerrt86899">
           <img src="./logo_p.png" width="50" height="50" class="d-inline-block" alt="" />
-          Integration Ninja
+          DevOps Learners
         </a>
       </nav>
       <div className='container'>
