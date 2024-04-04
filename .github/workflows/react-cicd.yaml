@@ -1,0 +1,30 @@
+name: CICD to Deploy React App
+on:
+    push:
+        branches: [main]
+jobs:
+    build:
+        runs-on: [ubuntu-latest]
+        steps:
+            - name: Checkout Source Code
+              uses: actions/checkout@v4
+
+            - name: Login to Docker Hub
+              run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+            - name: Build Docker Image
+              run: docker build -t blazerrt86899/mern-reactjs-app --build-arg REACT_APP_NODE_ENV='${{ secrets.REACT_APP_NODE_ENV }}' --build-arg REACT_APP_SERVER_BASE_URL='${{ secrets.REACT_APP_SERVER_BASE_URL }}' .
+
+            - name: Publish Docker Image to Registry
+              run: docker push blazerrt86899/mern-reactjs-app:latest
+    
+    deploy:
+        runs-on: [gcp-ce]
+        needs: [build]
+        steps:
+          - name: Pull Docker Image
+            run: docker pull blazerrt86899/mern-reactjs-app:latest
+          - name: Run Docker Image
+            run: docker run -d -p 3000:80 --name mern-reactjs-app-container blazerrt86899/mern-reactjs-app
+
+        
