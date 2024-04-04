@@ -24,6 +24,8 @@ jobs:
         steps:
           - name: Pull Docker Image
             run: docker pull blazerrt86899/mern-reactjs-app:latest
+          - name: Remove Docker Container
+            run: docker rm -f mern-reactjs-app-container
           - name: Run Docker Image
             run: docker run -d -p 3000:80 --name mern-reactjs-app-container blazerrt86899/mern-reactjs-app
 
